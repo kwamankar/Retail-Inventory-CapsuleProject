@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Trends</title>
+    <link rel="stylesheet" href="../styles/styles.css">
+</head>
+<body>
+    <header class="header-background">
+        <h1>Publicis Sapient: Retail Revolution Dashboard</h1>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="inventory.html">Inventory</a></li>
+            <li><a href="notifications.html">Notifications</a></li>
+            <li><a href="chatbot.html">Chatbot</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <section id="trends-section" class="content-section">
+            <h2>Track Your Stock Trends</h2>
+            <div class="chart-row">
+                <div class="chart-item">
+                    <canvas id="categoryPie" width="300" height="300"></canvas>
+                    <p>Inventory by Category</p>
+                </div>
+                <div class="chart-item">
+                    <canvas id="stockDoughnut" width="300" height="300"></canvas>
+                    <p>Stock Levels (Low/Normal/High)</p>
+                </div>
+                <div class="chart-item">
+                    <canvas id="itemBar" width="500" height="300"></canvas>
+                    <p>Inventory Quantity by Item</p>
+                </div>
+            </div>
+        </section>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="../js/trends.js"></script>
+
+     <footer class="footer-strip">
+        <p>© 2025 Publicis Sapient</p>
+    </footer>
+
+</body>
+</html>

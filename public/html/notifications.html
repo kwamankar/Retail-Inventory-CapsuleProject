@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notifications - Retail Revolution</title>
+    <link rel="stylesheet" href="../styles/styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .notifications-container {
+            background: #f8f9fa;
+            min-height: 100vh;
+        }
+        .notifications-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .notifications-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('../images/retail1.png') center/cover;
+            opacity: 0.1;
+            z-index: 0;
+        }
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+        .notifications-nav {
+            background: rgba(0,0,0,0.9);
+            padding: 15px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .notifications-nav a {
+            color: white;
+            text-decoration: none;
+            padding: 12px 25px;
+            margin: 0 8px;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .notifications-nav a:hover, .notifications-nav a.active {
+            background: #667eea;
+            transform: translateY(-2px);
+        }
+        .notifications-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+        .notification-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            border-top: 4px solid #667eea;
+            position: relative;
+            overflow: hidden;
+        }
+        .notification-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+        .notification-card.critical {
+            border-top-color: #dc3545;
+        }
+        .notification-card.warning {
+            border-top-color: #ffc107;
+        }
+        .notification-card.success {
+            border-top-color: #28a745;
+        }
+        .notification-card.info {
+            border-top-color: #17a2b8;
+        }
+        .notification-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .notification-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+        .notification-icon.critical {
+            background: linear-gradient(135deg, #dc3545, #c82333);
+        }
+        .notification-icon.warning {
+            background: linear-gradient(135deg, #ffc107, #e0a800);
+        }
+        .notification-icon.success {
+            background: linear-gradient(135deg, #28a745, #1e7e34);
+        }
+        .notification-icon.info {
+            background: linear-gradient(135deg, #17a2b8, #117a8b);
+        }
+        .notification-title {
+            flex: 1;
+            margin-left: 15px;
+        }
+        .notification-title h3 {
+            margin: 0 0 5px 0;
+            color: #333;
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+        .notification-count {
+            background: #667eea;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        .notification-count.critical {
+            background: #dc3545;
+        }
+        .notification-count.warning {
+            background: #ffc107;
+        }
+        .notification-count.success {
+            background: #28a745;
+        }
+        .notification-count.info {
+            background: #17a2b8;
+        }
+        .notification-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .notification-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+            transition: all 0.2s ease;
+        }
+        .notification-item:last-child {
+            border-bottom: none;
+        }
+        .notification-item:hover {
+            background: rgba(102, 126, 234, 0.05);
+            padding-left: 10px;
+            border-radius: 8px;
+        }
+        .notification-item-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            margin-right: 12px;
+            flex-shrink: 0;
+        }
+        .notification-item-content {
+            flex: 1;
+        }
+        .notification-item-text {
+            color: #333;
+            font-weight: 500;
+            margin-bottom: 2px;
+        }
+        .notification-item-meta {
+            color: #666;
+            font-size: 0.85rem;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #666;
+        }
+        .empty-state i {
+            font-size: 3rem;
+            color: #ccc;
+            margin-bottom: 15px;
+        }
+        .loading-spinner {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+            font-size: 1.2rem;
+            color: #667eea;
+        }
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .refresh-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.4);
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+        .refresh-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 25px rgba(102, 126, 234, 0.5);
+        }
+        .refresh-btn.spinning {
+            animation: spin 1s linear infinite;
+        }
+        @media (max-width: 768px) {
+            .notifications-grid {
+                grid-template-columns: 1fr;
+                padding: 20px 15px;
+            }
+            .notifications-nav a {
+                display: block;
+                margin: 5px 0;
+            }
+        }
+    </style>
+</head>
+<body class="notifications-container">
+    <header class="notifications-header">
+        <div class="header-content">
+            <h1><i class="fas fa-bell"></i> Notifications Center</h1>
+            <p>Stay updated with real-time inventory alerts and system notifications</p>
+        </div>
+    </header>
+
+    <nav class="notifications-nav">
+        <a href="/dashboard">
+            <i class="fas fa-home"></i> Dashboard
+        </a>
+        <a href="/inventory">
+            <i class="fas fa-boxes"></i> Inventory
+        </a>
+        <a href="/trends">
+            <i class="fas fa-chart-line"></i> Trends
+        </a>
+        <a href="/notifications" class="active">
+            <i class="fas fa-bell"></i> Notifications
+        </a>
+        <a href="/chatbot">
+            <i class="fas fa-robot"></i> AI Assistant
+        </a>
+        <a href="/contact">
+            <i class="fas fa-envelope"></i> Contact
+        </a>
+        <a href="#" onclick="logout()">
+            <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+    </nav>
+
+    <!-- Loading State -->
+    <div id="loading-state" class="loading-spinner">
+        <div class="spinner"></div>
+        Loading notifications...
+    </div>
+
+    <!-- Main Notifications Grid -->
+    <main id="notifications-main" class="notifications-grid" style="display: none;">
+        <!-- Critical Notifications -->
+        <div class="notification-card critical">
+            <div class="notification-header">
+                <div class="notification-icon critical">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <div class="notification-title">
+                    <h3>Critical Alerts</h3>
+                </div>
+                <span id="critical-count" class="notification-count critical">0</span>
+            </div>
+            <div id="critical-notifications" class="notification-list">
+                <div class="empty-state">
+                    <i class="fas fa-shield-check"></i>
+                    <p>No critical alerts at this time</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Warning Notifications -->
+        <div class="notification-card warning">
+            <div class="notification-header">
+                <div class="notification-icon warning">
+                    <i class="fas fa-exclamation-circle"></i>
+                </div>
+                <div class="notification-title">
+                    <h3>Warnings</h3>
+                </div>
+                <span id="warning-count" class="notification-count warning">0</span>
+            </div>
+            <div id="warning-notifications" class="notification-list">
+                <div class="empty-state">
+                    <i class="fas fa-thumbs-up"></i>
+                    <p>No warnings to display</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Success Notifications -->
+        <div class="notification-card success">
+            <div class="notification-header">
+                <div class="notification-icon success">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="notification-title">
+                    <h3>Success Updates</h3>
+                </div>
+                <span id="success-count" class="notification-count success">0</span>
+            </div>
+            <div id="success-notifications" class="notification-list">
+                <div class="empty-state">
+                    <i class="fas fa-smile"></i>
+                    <p>Recent successes will appear here</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Info Notifications -->
+        <div class="notification-card info">
+            <div class="notification-header">
+                <div class="notification-icon info">
+                    <i class="fas fa-info-circle"></i>
+                </div>
+                <div class="notification-title">
+                    <h3>Information</h3>
+                </div>
+                <span id="info-count" class="notification-count info">0</span>
+            </div>
+            <div id="info-notifications" class="notification-list">
+                <div class="empty-state">
+                    <i class="fas fa-info"></i>
+                    <p>System information updates</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Low Stock Alerts -->
+        <div class="notification-card critical">
+            <div class="notification-header">
+                <div class="notification-icon critical">
+                    <i class="fas fa-boxes"></i>
+                </div>
+                <div class="notification-title">
+                    <h3>Low Stock Items</h3>
+                </div>
+                <span id="low-stock-count" class="notification-count critical">0</span>
+            </div>
+            <div id="low-stock" class="notification-list">
+                <div class="empty-state">
+                    <i class="fas fa-warehouse"></i>
+                    <p>All items are well-stocked</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- High Stock Alerts -->
+        <div class="notification-card warning">
+            <div class="notification-header">
+                <div class="notification-icon warning">
+                    <i class="fas fa-layer-group"></i>
+                </div>
+                <div class="notification-title">
+                    <h3>High Stock Items</h3>
+                </div>
+                <span id="high-stock-count" class="notification-count warning">0</span>
+            </div>
+            <div id="high-stock" class="notification-list">
+                <div class="empty-state">
+                    <i class="fas fa-chart-bar"></i>
+                    <p>Stock levels are normal</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Refresh Button -->
+    <button id="refresh-btn" class="refresh-btn" onclick="refreshNotifications()" title="Refresh Notifications">
+        <i class="fas fa-sync-alt"></i>
+    </button>
+
+    <footer class="footer-strip">
+        <p>© 2025 Publicis Sapient - Retail Revolution Dashboard</p>
+    </footer>
+
+    <script src="../js/notifications.js"></script>
+    <script>
+        // Logout function
+        async function logout() {
+            try {
+                const response = await fetch('/logout', {
+                    method: 'POST',
+                    credentials: 'same-origin'
+                });
+                if (response.ok) {
+                    window.location.href = '/login.html';
+                } else {
+                    alert('Logout failed. Please try again.');
+                }
+            } catch (error) {
+                console.error('Logout error:', error);
+                alert('An error occurred during logout.');
+            }
+        }
+
+        // Refresh notifications function
+        async function refreshNotifications() {
+            const refreshBtn = document.getElementById('refresh-btn');
+            refreshBtn.classList.add('spinning');
+            
+            try {
+                await loadNotifications();
+                // Add a small delay for better UX
+                setTimeout(() => {
+                    refreshBtn.classList.remove('spinning');
+                }, 1000);
+            } catch (error) {
+                console.error('Refresh error:', error);
+                refreshBtn.classList.remove('spinning');
+            }
+        }
+    </script>

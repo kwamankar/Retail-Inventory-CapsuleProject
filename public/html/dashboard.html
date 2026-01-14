@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Retail Revolution</title>
+    <link rel="stylesheet" href="../styles/styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .user-dashboard {
+            background: #f8f9fa;
+            min-height: 100vh;
+        }
+        .dashboard-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        .dashboard-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('../images/retail1.png') center/cover;
+            opacity: 0.1;
+            z-index: 0;
+        }
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+        .dashboard-nav {
+            background: rgba(0,0,0,0.9);
+            padding: 15px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+        .dashboard-nav a {
+            color: white;
+            text-decoration: none;
+            padding: 12px 25px;
+            margin: 0 8px;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+        }
+        .dashboard-nav a:hover, .dashboard-nav a.active {
+            background: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+        .dashboard-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        .welcome-section {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            text-align: center;
+            border-top: 4px solid #667eea;
+        }
+        .welcome-title {
+            font-size: 2.5rem;
+            color: #333;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+        .welcome-subtitle {
+            color: #666;
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        .action-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            border-top: 4px solid #667eea;
+            cursor: pointer;
+        }
+        .action-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+        .action-icon {
+            font-size: 3rem;
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+        .action-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .action-desc {
+            color: #666;
+            line-height: 1.6;
+        }
+        .features-overview {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            border-top: 4px solid #667eea;
+        }
+        .features-title {
+            font-size: 2rem;
+            color: #333;
+            margin-bottom: 30px;
+            text-align: center;
+            font-weight: 600;
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+        }
+        .feature-icon {
+            font-size: 2rem;
+            color: #667eea;
+            width: 60px;
+            flex-shrink: 0;
+        }
+        .feature-content {
+            flex: 1;
+        }
+        .feature-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        .feature-description {
+            color: #666;
+            line-height: 1.6;
+        }
+        @media (max-width: 768px) {
+            .dashboard-nav a {
+                display: block;
+                margin: 5px 0;
+            }
+            .welcome-title {
+                font-size: 2rem;
+            }
+            .quick-actions {
+                grid-template-columns: 1fr;
+            }
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body class="user-dashboard">
+    <header class="dashboard-header">
+        <div class="header-content">
+            <h1><i class="fas fa-chart-line"></i> Retail Revolution Dashboard</h1>
+            <p>Streamline your inventory management with powerful tools</p>
+        </div>
+    </header>
+
+    <nav class="dashboard-nav">
+        <a href="/dashboard" class="active">
+            <i class="fas fa-home"></i> Dashboard
+        </a>
+        <a href="/inventory">
+            <i class="fas fa-boxes"></i> Inventory
+        </a>
+        <a href="/trends">
+            <i class="fas fa-chart-line"></i> Trends
+        </a>
+        <a href="/notifications">
+            <i class="fas fa-bell"></i> Notifications
+        </a>
+        <a href="/chatbot">
+            <i class="fas fa-robot"></i> AI Assistant
+        </a>
+        <a href="/contact">
+            <i class="fas fa-envelope"></i> Contact
+        </a>
+        <a href="#" onclick="logout()">
+            <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+    </nav>
+
+    <main class="dashboard-content">
+        <section class="welcome-section">
+            <h2 class="welcome-title">Welcome to Your Dashboard</h2>
+            <p class="welcome-subtitle">Manage your inventory efficiently with our comprehensive tools</p>
+        </section>
+
+        <section class="quick-actions">
+            <div class="action-card" onclick="window.location.href='/inventory'">
+                <div class="action-icon">
+                    <i class="fas fa-plus-circle"></i>
+                </div>
+                <h3 class="action-title">Add Inventory</h3>
+                <p class="action-desc">Add new products to your inventory with detailed information</p>
+            </div>
+
+            <div class="action-card" onclick="window.location.href='/trends'">
+                <div class="action-icon">
+                    <i class="fas fa-chart-bar"></i>
+                </div>
+                <h3 class="action-title">View Analytics</h3>
+                <p class="action-desc">Analyze trends and patterns in your inventory data</p>
+            </div>
+
+            <div class="action-card" onclick="window.location.href='/notifications'">
+                <div class="action-icon">
+                    <i class="fas fa-exclamation-circle"></i>
+                </div>
+                <h3 class="action-title">Check Alerts</h3>
+                <p class="action-desc">Monitor low stock items and important notifications</p>
+            </div>
+
+            <div class="action-card" onclick="window.location.href='/chatbot'">
+                <div class="action-icon">
+                    <i class="fas fa-comments"></i>
+                </div>
+                <h3 class="action-title">AI Assistant</h3>
+                <p class="action-desc">Get instant help with inventory queries and insights</p>
+            </div>
+        </section>
+
+        <section class="features-overview">
+            <h2 class="features-title">Platform Features</h2>
+            <div class="features-grid">
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-boxes"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h3 class="feature-name">Smart Inventory Tracking</h3>
+                        <p class="feature-description">Real-time inventory monitoring with automatic stock level updates and detailed item categorization.</p>
+                    </div>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h3 class="feature-name">Intelligent Alerts</h3>
+                        <p class="feature-description">Get notified about low stock levels, reorder points, and important inventory changes.</p>
+                    </div>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h3 class="feature-name">Advanced Analytics</h3>
+                        <p class="feature-description">Comprehensive reporting and trend analysis to make data-driven business decisions.</p>
+                    </div>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h3 class="feature-name">AI-Powered Support</h3>
+                        <p class="feature-description">Intelligent chatbot assistant to help with queries and provide instant inventory insights.</p>
+                    </div>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h3 class="feature-name">Mobile Responsive</h3>
+                        <p class="feature-description">Access your dashboard from any device with our fully responsive design.</p>
+                    </div>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h3 class="feature-name">Secure & Reliable</h3>
+                        <p class="feature-description">Enterprise-grade security with data encryption and reliable cloud infrastructure.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer-strip">
+        <p>© 2025 Retail Revolution by Publicis Sapient</p>
+    </footer>
+
+    <script>
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                fetch('/logout', { method: 'POST' })
+                .then(() => window.location.href = '/')
+                .catch(console.error);
+            }
+        }
+
+        // Add some interactivity
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add hover effects to action cards
+            const actionCards = document.querySelectorAll('.action-card');
+            actionCards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-5px) scale(1.02)';
+                });
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0) scale(1)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Retail Revolution</title>
+    <link rel="stylesheet" href="../styles/styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .admin-dashboard {
+            background: #f8f9fa;
+            min-height: 100vh;
+        }
+        .admin-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .admin-nav {
+            background: rgba(0,0,0,0.9);
+            padding: 15px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .admin-nav a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            margin: 0 10px;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .admin-nav a:hover, .admin-nav a.active {
+            background: #667eea;
+        }
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            padding: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .stat-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            border-left: 5px solid #667eea;
+        }
+        .stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        .stat-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+        .stat-icon {
+            font-size: 2.5rem;
+            color: #667eea;
+            opacity: 0.8;
+        }
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #333;
+            margin: 10px 0;
+        }
+        .stat-label {
+            color: #666;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+        .stat-change {
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        .stat-change.positive {
+            color: #28a745;
+        }
+        .stat-change.negative {
+            color: #dc3545;
+        }
+        .chart-container {
+            grid-column: span 2;
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+        .activity-feed {
+            grid-column: span 1;
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            max-height: 500px;
+            overflow-y: auto;
+        }
+        .activity-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            color: white;
+            font-size: 0.9rem;
+        }
+        .activity-login {
+            background: #28a745;
+        }
+        .activity-inventory {
+            background: #17a2b8;
+        }
+        .activity-logout {
+            background: #6c757d;
+        }
+        .activity-content {
+            flex: 1;
+        }
+        .activity-description {
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 2px;
+        }
+        .activity-time {
+            font-size: 0.85rem;
+            color: #666;
+        }
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+            font-size: 1.2rem;
+            color: #667eea;
+        }
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+                padding: 15px;
+            }
+            .chart-container {
+                grid-column: span 1;
+            }
+        }
+    </style>
+</head>
+<body class="admin-dashboard">
+    <header class="admin-header">
+        <h1><i class="fas fa-tachometer-alt"></i> Admin Dashboard</h1>
+        <p>Monitor and manage your retail operations</p>
+    </header>
+
+    <nav class="admin-nav">
+        <a href="/admin-dashboard" class="active">
+            <i class="fas fa-chart-pie"></i> Dashboard
+        </a>
+        <a href="/inventory">
+            <i class="fas fa-boxes"></i> Inventory
+        </a>
+        <a href="/admin-users">
+            <i class="fas fa-users"></i> Users
+        </a>
+        <a href="/chatbot">
+            <i class="fas fa-robot"></i> Support Bot
+        </a>
+        <a href="#" onclick="logout()">
+            <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+    </nav>
+
+    <main class="dashboard-grid">
+        <!-- User Statistics -->
+        <div class="stat-card">
+            <div class="stat-header">
+                <div class="stat-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+            </div>
+            <div class="stat-value" id="total-users">-</div>
+            <div class="stat-label">Total Users</div>
+            <div class="stat-change positive" id="users-change">-</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-header">
+                <div class="stat-icon">
+                    <i class="fas fa-user-clock"></i>
+                </div>
+            </div>
+            <div class="stat-value" id="active-users">-</div>
+            <div class="stat-label">Active Users (24h)</div>
+            <div class="stat-change positive" id="active-change">-</div>
+        </div>
+
+        <!-- Inventory Statistics -->
+        <div class="stat-card">
+            <div class="stat-header">
+                <div class="stat-icon">
+                    <i class="fas fa-boxes"></i>
+                </div>
+            </div>
+            <div class="stat-value" id="total-inventory">-</div>
+            <div class="stat-label">Total Items</div>
+            <div class="stat-change positive" id="inventory-change">-</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-header">
+                <div class="stat-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+            </div>
+            <div class="stat-value" id="low-stock">-</div>
+            <div class="stat-label">Low Stock Items</div>
+            <div class="stat-change negative" id="low-stock-change">-</div>
+        </div>
+
+        <!-- Login Statistics -->
+        <div class="stat-card">
+            <div class="stat-header">
+                <div class="stat-icon">
+                    <i class="fas fa-sign-in-alt"></i>
+                </div>
+            </div>
+            <div class="stat-value" id="today-logins">-</div>
+            <div class="stat-label">Today's Logins</div>
+            <div class="stat-change positive" id="login-change">-</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-header">
+                <div class="stat-icon">
+                    <i class="fas fa-dollar-sign"></i>
+                </div>
+            </div>
+            <div class="stat-value" id="inventory-value">-</div>
+            <div class="stat-label">Total Inventory Value</div>
+            <div class="stat-change positive" id="value-change">-</div>
+        </div>
+
+        <!-- Activity Feed -->
+        <div class="activity-feed">
+            <h3 style="margin-top: 0; margin-bottom: 20px; color: #333;">
+                <i class="fas fa-clock"></i> Recent Activity
+            </h3>
+            <div id="activity-list">
+                <div class="loading">
+                    <div class="spinner"></div>
+                    Loading activities...
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        async function loadDashboardData() {
+            try {
+                console.log('Loading dashboard data...');
+                const response = await fetch('/api/admin/dashboard-stats');
+                
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error('Response not OK:', response.status, errorText);
+                    throw new Error(`HTTP ${response.status}: ${errorText}`);
+                }
+                
+                const data = await response.json();
+                console.log('Received data:', data);
+                
+                // Update user statistics
+                document.getElementById('total-users').textContent = data.users?.total || '0';
+                document.getElementById('active-users').textContent = data.users?.active || '0';
+                document.getElementById('users-change').textContent = `+${data.users?.recent || 0} this week`;
+                
+                // Update inventory statistics
+                document.getElementById('total-inventory').textContent = data.inventory?.total || '0';
+                document.getElementById('low-stock').textContent = data.inventory?.lowStock || '0';
+                
+                // Fix totalValue handling
+                const totalValue = parseFloat(data.inventory?.totalValue) || 0;
+                document.getElementById('inventory-value').textContent = `$${totalValue.toFixed(2)}`;
+                
+                // Update login statistics
+                document.getElementById('today-logins').textContent = data.logins?.today || '0';
+                document.getElementById('login-change').textContent = `${data.logins?.week || 0} this week`;
+                
+                // Update activity feed
+                const activityList = document.getElementById('activity-list');
+                if (data.activity && data.activity.length > 0) {
+                    activityList.innerHTML = data.activity.map(activity => {
+                        const iconClass = activity.activity_type === 'LOGIN' ? 'activity-login' :
+                                        activity.activity_type.includes('INVENTORY') ? 'activity-inventory' : 'activity-logout';
+                        const icon = activity.activity_type === 'LOGIN' ? 'sign-in-alt' :
+                                   activity.activity_type.includes('INVENTORY') ? 'boxes' : 'sign-out-alt';
+                        
+                        return `
+                            <div class="activity-item">
+                                <div class="activity-icon ${iconClass}">
+                                    <i class="fas fa-${icon}"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <div class="activity-description">${activity.username}: ${activity.activity_description}</div>
+                                    <div class="activity-time">${new Date(activity.created_at).toLocaleString()}</div>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                } else {
+                    activityList.innerHTML = '<p style="color: #666; text-align: center;">No recent activity</p>';
+                }
+                
+                console.log('Dashboard data loaded successfully');
+                
+            } catch (error) {
+                console.error('Error loading dashboard data:', error);
+                
+                // Show specific error message
+                const errorMsg = error.message.includes('403') ? 'Access denied - Admin login required' : 
+                                error.message.includes('500') ? 'Server error - Please try again later' :
+                                `Error: ${error.message}`;
+                
+                // Show error state with specific error
+                document.querySelectorAll('.stat-value').forEach(el => {
+                    el.textContent = 'Error';
+                    el.style.color = '#dc3545';
+                });
+                
+                const activityList = document.getElementById('activity-list');
+                activityList.innerHTML = `<p style="color: #dc3545; text-align: center;">Failed to load data: ${errorMsg}</p>`;
+                
+                // Show retry button
+                const retryBtn = document.createElement('button');
+                retryBtn.textContent = 'Retry';
+                retryBtn.className = 'btn btn-primary';
+                retryBtn.style.marginTop = '10px';
+                retryBtn.onclick = loadDashboardData;
+                activityList.appendChild(retryBtn);
+            }
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                fetch('/logout', { method: 'POST' })
+                .then(() => window.location.href = '/')
+                .catch(console.error);
+            }
+        }
+
+        // Auto-refresh dashboard data every 30 seconds
+        setInterval(loadDashboardData, 30000);
+        
+        // Load initial data
+        document.addEventListener('DOMContentLoaded', loadDashboardData);
+    </script>
+</body>
+</html>

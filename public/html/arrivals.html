@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Arrivals</title>
+  <link rel="stylesheet" href="../styles/styles.css">
+</head>
+<body>
+  <script>if (!localStorage.getItem('authUser')) location.replace('login.html');</script>
+  <header class="header-background"><h1>Arrivals</h1></header>
+  <nav><ul><li><a href="index.html">Home</a></li><li><a href="inventory.html">Inventory</a></li><li><a href="arrivals.html" class="active">Arrivals</a></li><li><a href="trends.html">Trends</a></li><li><a href="notifications.html">Notifications</a></li><li><a href="chatbot.html">Chatbot</a></li></ul></nav>
+  <main class="content-section">
+    <form id="arrivals-form" class="item-form">
+      <input id="arrival-name" placeholder="Product Name">
+      <input id="arrival-date" type="date">
+      <input id="arrival-qty" type="number" placeholder="Qty">
+      <button type="submit">Add</button>
+    </form>
+    <table id="arrivals-table">
+      <thead><tr><th>Name</th><th>Date</th><th>Qty</th><th>Actions</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </main>
+  <footer class="footer-strip"><p>© 2025 Publicis Sapient</p></footer>
+  <script src="../js/script.js"></script>
+</body>
+</html>
