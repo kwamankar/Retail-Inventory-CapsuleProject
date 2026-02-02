@@ -14,13 +14,13 @@ jobs:
 
     - name: Login to ACR
       run: |
-        echo "${{ secrets.ACR_PASSWORD }}" | docker login labskraftacr.azurecr.io \
+        echo "${{ secrets.ACR_PASSWORD }}" | docker login retailacrdev.azurecr.io \
           -u ${{ secrets.ACR_USERNAME }} --password-stdin
 
     - name: Build Image
       run: |
-        docker build -t labskraftacr.azurecr.io/retail-app:v${{ github.run_number }} .
+        docker build -t retailacrdev.azurecr.io/retail-app:v${{ github.run_number }} .
 
     - name: Push Image
       run: |
-        docker push labskraftacr.azurecr.io/retail-app:v${{ github.run_number }}
+        docker push retailacrdev.azurecr.io/retail-app:v${{ github.run_number }}
