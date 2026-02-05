@@ -6,7 +6,7 @@ A containerized retail inventory management system with Node.js, Express, and My
 
 ### Prerequisites
 - Docker Desktop
-- 2GB free disk space
+-- 2GB free disk space
 
 ### Start Application
 ```bash
