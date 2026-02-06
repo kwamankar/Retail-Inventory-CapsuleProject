@@ -1,3 +1,7 @@
+const client = require('prom-client');
+ client.collectDefaultMetrics({
+  prefix: 'microservice1_'
+});
 require('dotenv').config();
 const express = require("express");
 const path = require("path");
